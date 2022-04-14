@@ -1,0 +1,34 @@
+{
+  "status": "development",
+  "jwtSecret": "o/o033Ubli/DeD/lOI2KTE89EdQ1uLVxsb/r9VXqraaEih31ou6hlMxRBibCc5U28tClLhLD6T5h3d06JnCJTEtn1A/ojMDHBpjf8Kfsjb9wjtKbO/rbs0wz1pvYQmniUSwUFz8gnOwsAIo/cw6DVxjkAMy9yNT4EqDp9YcQ+kSdYKiRVUqKVd+Adx5bH0wjS/RzeGM/Xv6/0tZX6W0h00LDV0JuqQoM0t6sPoDjJuPQaZmqkl9mRFgL7SpoiHqAmY+wEYhY/Ma25mi9UuAgkUQKtvt36j58q2XOQDg+jCX+yEJA/u39NRh/xP0wx9JUEefxhuil4zcA8foO/BsZRQ==",
+  "port": 5432,
+  "email": "proffesion90@gmail.com",
+  "email_passowrd": "",
+  "system": "Congo management",
+  "url": "http://159.203.117.40",
+  "auditor_id": "52fe8871-5778-45fc-91da-b489eefe07ae",
+  "production": {
+    "user": "postgres",
+    "host": "localhost",
+    "url": "http://159.203.117.40",
+    "database": "congo-management-db",
+    "password": "cre@tiveDBRwanda",
+    "port": 5432
+  },
+  "testing": {
+    "user": "postgres",
+    "host": "localhost",
+    "url": "http://localhost:5000",
+    "database": "congo-management-db",
+    "password": "cre@tiveDB",
+    "port": 5432
+  },
+  "development": {
+    "user": "postgres",
+    "host": "localhost",
+    "url": "http://localhost:5000",
+    "database": "congo-management-db",
+    "password": "janvier",
+    "port": 5432
+  }
+}
