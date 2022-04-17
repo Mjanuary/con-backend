@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+const { ERROR_TEXT, errorDisplay } = require("../config/config");
 
 // Get the active year
 const getActiveAcademic = async () => {
@@ -8,8 +9,8 @@ const getActiveAcademic = async () => {
     );
     return data;
   } catch (error) {
-    console.log(error);
-    throw "Failed to peform the task, try again later";
+    errorDisplay(error);
+    throw ERROR_TEXT;
   }
 };
 

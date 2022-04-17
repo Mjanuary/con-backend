@@ -1,0 +1,47 @@
+INSERT INTO domains(domain_name) VALUES ('Décentralisation'),('Administration du Territoire'),('Sécurité'),('Ordre Public'),('Environnement'),('Transport et Voies de Communication'),('Tourisme'),('Agriculture '),('Elevage '),('Pêche'),('Développement Rural'),('Mines et Géologie'),('Statistiques et qualification des sites miniers'),('Ressources Hydrauliques'),('Energie'),('Hydrocarbures'),('Education'),('Communication et Médias'),('Santé'),('Famille'),('Genre et Enfant'),('Culture et Arts'),('Travail'),('Affaires Sociales'),('Jeunesse'),('Sports et Loisir'),('Reconstruction'),('Finances'),('Portefeuille'),('Mobilisation des Recettes'),('Industrie'),('Petites et Moyennes entreprises'),('Economie'),('Plan'),('Budget'),('Travaux Publics'),('Commerce'),('Justice'),('Affaires Coutumières'),('Affaires Foncières'),('Aménagement du Territoire'),('Urbanisme'),('Habitat');
+
+
+-- SAME DATA IN LIST FORMATS
+-- INSERT INTO domains(domain_name) VALUES ('Décentralisation');
+-- INSERT INTO domains(domain_name) VALUES ('Administration du Territoire');
+-- INSERT INTO domains(domain_name) VALUES ('Sécurité');
+-- INSERT INTO domains(domain_name) VALUES ('Ordre Public');
+-- INSERT INTO domains(domain_name) VALUES ('Environnement');
+-- INSERT INTO domains(domain_name) VALUES ('Transport et Voies de Communication');
+-- INSERT INTO domains(domain_name) VALUES ('Tourisme');
+-- INSERT INTO domains(domain_name) VALUES ('Agriculture ');
+-- INSERT INTO domains(domain_name) VALUES ('Elevage ');
+-- INSERT INTO domains(domain_name) VALUES ('Pêche');
+-- INSERT INTO domains(domain_name) VALUES ('Développement Rural');
+-- INSERT INTO domains(domain_name) VALUES ('Mines et Géologie');
+-- INSERT INTO domains(domain_name) VALUES ('Statistiques et qualification des sites miniers');
+-- INSERT INTO domains(domain_name) VALUES ('Ressources Hydrauliques');
+-- INSERT INTO domains(domain_name) VALUES ('Energie');
+-- INSERT INTO domains(domain_name) VALUES ('Hydrocarbures');
+-- INSERT INTO domains(domain_name) VALUES ('Education');
+-- INSERT INTO domains(domain_name) VALUES ('Communication et Médias');
+-- INSERT INTO domains(domain_name) VALUES ('Santé');
+-- INSERT INTO domains(domain_name) VALUES ('Famille');
+-- INSERT INTO domains(domain_name) VALUES ('Genre et Enfant');
+-- INSERT INTO domains(domain_name) VALUES ('Culture et Arts');
+-- INSERT INTO domains(domain_name) VALUES ('Travail');
+-- INSERT INTO domains(domain_name) VALUES ('Affaires Sociales');
+-- INSERT INTO domains(domain_name) VALUES ('Jeunesse');
+-- INSERT INTO domains(domain_name) VALUES ('Sports et Loisir');
+-- INSERT INTO domains(domain_name) VALUES ('Reconstruction');
+-- INSERT INTO domains(domain_name) VALUES ('Finances');
+-- INSERT INTO domains(domain_name) VALUES ('Portefeuille');
+-- INSERT INTO domains(domain_name) VALUES ('Mobilisation des Recettes');
+-- INSERT INTO domains(domain_name) VALUES ('Industrie');
+-- INSERT INTO domains(domain_name) VALUES ('Petites et Moyennes entreprises');
+-- INSERT INTO domains(domain_name) VALUES ('Economie');
+-- INSERT INTO domains(domain_name) VALUES ('Plan');
+-- INSERT INTO domains(domain_name) VALUES ('Budget');
+-- INSERT INTO domains(domain_name) VALUES ('Travaux Publics');
+-- INSERT INTO domains(domain_name) VALUES ('Commerce');
+-- INSERT INTO domains(domain_name) VALUES ('Justice');
+-- INSERT INTO domains(domain_name) VALUES ('Affaires Coutumières');
+-- INSERT INTO domains(domain_name) VALUES ('Affaires Foncières');
+-- INSERT INTO domains(domain_name) VALUES ('Aménagement du Territoire');
+-- INSERT INTO domains(domain_name) VALUES ('Urbanisme');
+-- INSERT INTO domains(domain_name) VALUES ('Habitat');

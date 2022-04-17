@@ -37,7 +37,7 @@ router.post(
       });
     } catch (error) {
       console.log({ ...error });
-      return res.status(500).json(errorFormatter("erreur du serveur", error));
+      return res.status(500).json(errorFormatter(null, error));
     }
   }
 );
@@ -48,7 +48,7 @@ router.get("/", async (req, res) => {
     return res.status(200).json(user.rows);
   } catch (error) {
     console.log(error);
-    return res.status(500).json(errorFormatter("erreur du serveur", error));
+    return res.status(500).json(errorFormatter(null, error));
   }
 });
 

@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+const { ERROR_TEXT, errorDisplay } = require("../config/config");
 
 // FIND USER BY ID OR EMAIL
 const getUserByEmailOrNid = async (email, phone) => {
@@ -9,7 +10,8 @@ const getUserByEmailOrNid = async (email, phone) => {
     );
     return user;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
@@ -22,7 +24,8 @@ const getUserByEmail = async (email) => {
     );
     return user;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
@@ -46,7 +49,8 @@ const addNewUser = async (newUser) => {
     );
     return user;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
@@ -59,19 +63,21 @@ const login = async (email) => {
     );
     return user;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
 // GET ALL USERS
 const getAllUsers = async () => {
   try {
-    let data =
-      await pool.query(`SELECT users.user_id, email, first_name, last_name, middle_name, phone, user_to_access.role_id, role_name, user_to_access_id, date
-    FROM users,user_to_access,roles WHERE users.user_id = user_to_access.user_id AND user_to_access.role_id = roles.role_id`);
+    let data = await pool.query(
+      `SELECT user_id, email, first_name, last_name, middle_name, password, status, phone FROM users WHERE status = 1`
+    );
     return data;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
@@ -79,13 +85,13 @@ const getAllUsers = async () => {
 const getUserById = async (id) => {
   try {
     let data = await pool.query(
-      `SELECT users.user_id, email, first_name, last_name, middle_name, phone, user_to_access.role_id, role_name, user_to_access_id, date, roles.access
-      FROM users,user_to_access,roles WHERE users.user_id = user_to_access.user_id AND user_to_access.role_id = roles.role_id AND users.user_id = $1 LIMIT 1`,
+      `SELECT user_id, email, first_name, last_name, middle_name, status, phone FROM users WHERE user_id = $1 AND status = 1 LIMIT 1`,
       [id]
     );
     return data;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
@@ -98,7 +104,8 @@ const validateUser = async (id) => {
     );
     return data;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
@@ -112,7 +119,8 @@ const updateUserPassword = async (id, password) => {
 
     return data;
   } catch (error) {
-    return error;
+    errorDisplay(error);
+    return ERROR_TEXT;
   }
 };
 
@@ -134,7 +142,8 @@ const updateUserPassword = async (id, password) => {
 
 //     return data;
 //   } catch (error) {
-//     return error;
+// errorDisplay(error);
+//     return ERROR_TEXT;
 //   }
 // };
 
@@ -159,7 +168,8 @@ const updateUserPassword = async (id, password) => {
 //     console.log(data);
 //     return data;
 //   } catch (error) {
-//     return error;
+// errorDisplay(error);
+//     return ERROR_TEXT;
 //   }
 // };
 

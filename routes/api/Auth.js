@@ -12,6 +12,7 @@ const auth = require("../../middleware/auth");
 // Models
 const User = require("../../models/users");
 const Roles = require("../../models/roles");
+const Access = require("../../models/user_to_access");
 
 //setting router
 const router = express.Router();
@@ -31,6 +32,7 @@ router.post(
     check("middle_name", "le deuxième prénom est obligatoire").not().isEmpty(),
     check("role", "rôle est requis").not().isEmpty(),
     check("password", "le mot de passe est requis").not().isEmpty(),
+    check("domain_id", "le domaine est requis").not().isEmpty(),
   ],
   async (req, res) => {
     //checking errors
@@ -42,8 +44,16 @@ router.post(
       });
     }
 
-    const { email, phone, first_name, last_name, middle_name, password, role } =
-      req.body;
+    const {
+      email,
+      phone,
+      first_name,
+      last_name,
+      middle_name,
+      password,
+      role,
+      domain_id,
+    } = req.body;
 
     try {
       // CHECK IF THE USER EXISTS
@@ -91,6 +101,7 @@ router.post(
       let AddRoleToUser = await Roles.CreateAccess({
         role_id: role,
         user_id: userId,
+        domain_id: domain_id,
       });
 
       if (AddRoleToUser.rowCount <= 0) {
@@ -116,14 +127,7 @@ router.post(
       });
     } catch (error) {
       console.log({ ...error });
-      return res.status(500).json({
-        errors: [
-          {
-            msg: "erreur du serveur",
-            error: error,
-          },
-        ],
-      });
+      return res.status(500).json(errorFormatter(null, error));
     }
   }
 );
@@ -213,15 +217,7 @@ router.post(
       );
     } catch (error) {
       console.log(error);
-      return res.status(500).json({
-        errors: [
-          {
-            msg: "erreur du serveur",
-            errormsg: error.message,
-            error: error,
-          },
-        ],
-      });
+      return res.status(500).json(errorFormatter(null, error));
     }
   }
 );
@@ -237,6 +233,7 @@ router.get("/me", auth, async (req, res) => {
   try {
     const userId = req.user.id;
     let user = await User.getUserById(userId);
+    let access = await Access.getAccessByUserId(userId);
 
     if (user.rows.length <= 0)
       return res
@@ -248,10 +245,10 @@ router.get("/me", auth, async (req, res) => {
           )
         );
 
-    return res.status(200).json(user.rows[0]);
+    return res.status(200).json({ user: user.rows[0], access: access.rows });
   } catch (error) {
     console.log(error);
-    return res.status(500).json(errorFormatter("erreur du serveur", error));
+    return res.status(500).json(errorFormatter(null, error));
   }
 });
 
