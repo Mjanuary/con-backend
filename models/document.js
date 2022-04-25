@@ -1,5 +1,6 @@
 const pool = require("../config/db");
 const { ERROR_TEXT, errorDisplay } = require("../config/config");
+const { UserRoles_ENUM } = require("./roles");
 
 // Get the number of all documents
 const getTotalDocuments = async () => {
@@ -51,51 +52,30 @@ const createDocument = async ({
   }
 };
 
-// ,document_reference_code
-// ,domain_id
-// ,priority_id
-// ,institute_id
-// ,minister_view
-// ,minister_view_date
-// ,minister_id
-// ,minister_comment
-// ,cecat_view
-// ,cecat_view_date
-// ,cecat_id
-// ,director_view
-// ,director_view_date
-// ,director_id
-// ,director_comment
-// ,governor_view
-// ,governor_signed
-// ,governor_id
-// ,governor_comment
-// ,expert_view
-// ,expert_view_date
-// ,expert_id
-// ,expert_comment
-// ,expert_letter
-// ,expert_letter_date
-// ,expeditor_view
-// ,expeditor_id
-// ,close
-// ,to_print
-// ,printed_file_url
-// ,closed
-// ,governor_access
-// ,expert_access
-// ,expeditor_access
-// ,director_access
-// ,governor_comment_access
-// ,expert_comment_access
-// ,director_cimment_access
-// ,ministor_access
-// ,ministor_comment_access
-// ,status
-// ,owner_name
-// ,owner_institute
-// ,owner_phone
-// ,owner_email
+const getDocumentFewInfoByReferenceCode = async (document_id) => {
+  try {
+    let data = await pool.query(
+      `SELECT document_id, document_code, document_url, document_reference_code, domain_id, registered_date, owner_name, owner_institute, owner_phone, owner_email FROM documents WHERE status='1' AND document_code = $1`,
+      [document_id]
+    );
+    return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
+
+const getAllDocumentFewInfo = async () => {
+  try {
+    let data = await pool.query(
+      `SELECT document_id, document_code, domain_id, registered_date, owner_name, owner_institute, owner_phone, owner_email FROM documents`
+    );
+    return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
 
 const getDocumentDetailsById = async (document_id) => {
   try {
@@ -155,6 +135,12 @@ const updateDocument = async ({
   owner_institute,
   owner_phone,
   owner_email,
+  governor_view_date,
+  expeditor_view_date,
+  governor_comment_date,
+  expert_comment_date,
+  director_comment_date,
+  ministor_comment_date,
 }) => {
   try {
     let data = await pool.query(
@@ -201,7 +187,14 @@ const updateDocument = async ({
   owner_name=$40,
   owner_institute=$41,
   owner_phone=$42,
-  owner_email=$43 WHERE document_id = $44
+  owner_email=$43,
+  governor_view_date=$44, 
+  expeditor_view_date=$45, 
+  governor_comment_date=$46, 
+  expert_comment_date=$47, 
+  director_comment_date=$48, 
+  ministor_comment_date=$49
+  WHERE document_id = $50
       `,
       [
         document_reference_code,
@@ -247,10 +240,79 @@ const updateDocument = async ({
         owner_institute,
         owner_phone,
         owner_email,
+        governor_view_date,
+        expeditor_view_date,
+        governor_comment_date,
+        expert_comment_date,
+        director_comment_date,
+        ministor_comment_date,
         document_id,
       ]
     );
     return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
+
+const getDocumentsList = async (access_enum, domain_id) => {
+  console.log({ access_enum, domain_id });
+  try {
+    let query = "";
+    let data = [];
+    if (UserRoles_ENUM.CECAT === access_enum) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0'`;
+      data = [];
+    }
+    if (UserRoles_ENUM.CABINET_OFFICE === access_enum) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0'`;
+      data = [];
+    }
+    if (UserRoles_ENUM.EXPEDITION === access_enum) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0' AND to_print = '1'`;
+      data = [];
+    }
+    if (UserRoles_ENUM.EXPERT === access_enum) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0' AND expert_access = '1' AND domain_id = $1`;
+      data = [domain_id];
+    }
+    if (
+      UserRoles_ENUM.GOVENEUR === access_enum ||
+      UserRoles_ENUM.SOUS_GOVENER === access_enum
+    ) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0' AND governor_access='1' `;
+      data = [];
+    }
+    if (UserRoles_ENUM.MINISTOR === access_enum) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0' AND ministor_access='1' AND domain_id=$1 `;
+      data = [domain_id];
+    }
+    if (UserRoles_ENUM.SECRETARY === access_enum) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0'`;
+      data = [];
+    }
+    // if (UserRoles_ENUM.SOUS_GOVENER === access_enum) {
+    //   query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+    //   FROM documents WHERE status='1' AND closed = '0' AND governor_access='1' `;
+    //   data = [];
+    // }
+    if (UserRoles_ENUM.DIRECTOR === access_enum) {
+      query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
+      FROM documents WHERE status='1' AND closed = '0' AND director_access='1' `;
+      data = [];
+    }
+    if (query === "") throw ERROR_TEXT;
+
+    let dataDB = await pool.query(query, data);
+    return dataDB;
   } catch (error) {
     errorDisplay(error);
     throw ERROR_TEXT;
@@ -262,4 +324,7 @@ module.exports = {
   getTotalDocuments,
   createDocument,
   getDocumentDetailsById,
+  getDocumentsList,
+  getDocumentFewInfoByReferenceCode,
+  getAllDocumentFewInfo,
 };

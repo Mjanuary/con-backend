@@ -8,5 +8,6 @@ router.use("/document", require("./Document"));
 router.use("/auth", require("./Auth"));
 router.use("/roles", require("./Roles"));
 router.use("/users", require("./Users"));
+router.use("/base", require("./Base"));
 
 module.exports = router;

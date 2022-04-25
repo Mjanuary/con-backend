@@ -124,55 +124,6 @@ const updateUserPassword = async (id, password) => {
   }
 };
 
-// const updateProfile = async (req) => {
-//   const { username, names, dob, gender, nid, email, phone_number, id } = req;
-//   try {
-//     let data = await pool.query(
-//       `UPDATE users SET
-//         username=$1,
-//         names=$2,
-//         dob=$3,
-//         gender=$4,
-//         nid=$5,
-//         email=$6,
-//         phone_number=$7
-//   WHERE user_id=$8`,
-//       [username, names, dob, gender, nid, email, phone_number, id]
-//     );
-
-//     return data;
-//   } catch (error) {
-// errorDisplay(error);
-//     return ERROR_TEXT;
-//   }
-// };
-
-/**
- * @description user details on the first login
- * @param {*} district_id
- */
-// const updateProfileInfo = async (req) => {
-//   const { username, names, dob, gender, id } = req;
-//   try {
-//     let data = await pool.query(
-//       `UPDATE users SET
-//         username=$1,
-//         names=$2,
-//         dob=$3,
-//         gender=$4,
-//         activated=$5
-//       WHERE user_id=$6`,
-//       [username, names, dob, gender, 1, id]
-//     );
-
-//     console.log(data);
-//     return data;
-//   } catch (error) {
-// errorDisplay(error);
-//     return ERROR_TEXT;
-//   }
-// };
-
 module.exports = {
   getUserById,
   getAllUsers,
@@ -181,8 +132,5 @@ module.exports = {
   addNewUser,
   validateUser,
   updateUserPassword,
-  // updateProfile,
   getUserByEmail,
-  // ExistEmail,
-  // updateProfileInfo,
 };

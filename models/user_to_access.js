@@ -5,7 +5,7 @@ const { ERROR_TEXT, errorDisplay } = require("../config/config");
 const getAccessByUserId = async (user_id) => {
   try {
     let data = await pool.query(
-      `SELECT roles.role_name, roles.access, user_to_access.user_to_access_id, user_to_access.user_id, user_to_access.role_id, user_to_access.date, domains.domain_id,domains.domain_name
+      `SELECT roles.role_name, roles.access, roles.constant, user_to_access.user_to_access_id, user_to_access.user_id, user_to_access.role_id, user_to_access.date, domains.domain_id,domains.domain_name
       FROM user_to_access,domains,roles 
       WHERE 
           user_to_access.domain_id = domains.domain_id

@@ -146,9 +146,6 @@ router.post(
   async (req, res) => {
     //checking errors
     const errors = validationResult(req);
-    // const customErrors = [];
-    // const peformedTask = [];
-    // let responce = {};
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -164,21 +161,21 @@ router.post(
 
       if (DBuser.rowCount <= 0) {
         // customErrors.push("Failed to login");
-        return res.status(400).json({
-          errors: [
-            {
-              msg: "votre email ou votre mot de passe sont incorrects",
-              error: null,
-            },
-          ],
-        });
+        return res
+          .status(400)
+          .json(
+            errorFormatter(
+              "votre email ou votre mot de passe sont incorrects",
+              null
+            )
+          );
       }
 
       // once the users are not conencted to the database they will see this error
       if (DBuser === undefined) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Erreur de connexion!" }] });
+          .json(errorFormatter("Erreur de connexion!", null));
       }
 
       const user = DBuser.rows[0];
@@ -186,14 +183,14 @@ router.post(
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res.status(400).json({
-          errors: [
-            {
-              msg: "votre email ou votre mot de passe sont incorrects",
-              error: null,
-            },
-          ],
-        });
+        return res
+          .status(400)
+          .json(
+            errorFormatter(
+              "votre email ou votre mot de passe sont incorrects",
+              null
+            )
+          );
       }
 
       // create a payload
@@ -209,7 +206,8 @@ router.post(
         // sign
         payload,
         config.get("jwtSecret"),
-        { expiresIn: 56000 },
+        { expiresIn: 56000000 },
+        // { expiresIn: 56000 },
         (err, token) => {
           if (err) throw err;
           res.status(200).json({ token }); // send it back to the client

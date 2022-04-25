@@ -40,8 +40,21 @@ const CreateAccess = async ({ user_id, role_id, domain_id }) => {
   }
 };
 
+const UserRoles_ENUM = {
+  EXPERT: "EXPERT",
+  GOVENEUR: "GOVENEUR",
+  SOUS_GOVENER: "SOUS_GOVENER",
+  MINISTOR: "MINISTOR",
+  CECAT: "CECAT",
+  EXPEDITION: "EXPEDITION",
+  SECRETARY: "SECRETARY",
+  CABINET_OFFICE: "CABINET_OFFICE",
+  CONSEILLER: "CONSEILLER",
+  DIRECTOR: "DIRECTOR",
+};
 module.exports = {
   CreateAccess,
   getRoles,
   CreateRole,
+  UserRoles_ENUM,
 };

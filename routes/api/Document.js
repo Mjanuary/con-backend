@@ -4,6 +4,7 @@ const errorFormatter = require("../../controllers/errorFormatter");
 const Upload = require("../../controllers/UploadFiles");
 const auth = require("../../middleware/auth"); // Middleware
 const Document = require("../../models/document");
+const Users = require("../../models/users");
 const GenerateDocumentCode = require("../../controllers/GenerateDocumentCode");
 const { v4: uuidv4 } = require("uuid");
 // Models
@@ -126,7 +127,14 @@ router.put(
     check("owner_institute", ""),
     check("owner_phone", ""),
     check("owner_email", ""),
+    check("governor_view_date", ""),
+    check("expeditor_view_date", ""),
+    check("governor_comment_date", ""),
+    check("expert_comment_date", ""),
+    check("director_comment_date", ""),
+    check("ministor_comment_date", ""),
   ],
+
   async (req, res, next) => {
     //checking errors
     const errors = validationResult(req);
@@ -213,6 +221,18 @@ router.put(
         DocumentObj.owner_institute = req.body.owner_institute;
       if (req.body.owner_phone) DocumentObj.owner_phone = req.body.owner_phone;
       if (req.body.owner_email) DocumentObj.owner_email = req.body.owner_email;
+      if (req.body.governor_view_date)
+        DocumentObj.governor_view_date = req.body.governor_view_date;
+      if (req.body.expeditor_view_date)
+        DocumentObj.expeditor_view_date = req.body.expeditor_view_date;
+      if (req.body.governor_comment_date)
+        DocumentObj.governor_comment_date = req.body.governor_comment_date;
+      if (req.body.expert_comment_date)
+        DocumentObj.expert_comment_date = req.body.expert_comment_date;
+      if (req.body.director_comment_date)
+        DocumentObj.director_comment_date = req.body.director_comment_date;
+      if (req.body.ministor_comment_date)
+        DocumentObj.ministor_comment_date = req.body.ministor_comment_date;
 
       let document_db = await Document.getDocumentDetailsById(
         req.body.document_id
@@ -221,7 +241,10 @@ router.put(
         return res
           .status(400)
           .json(
-            errorFormatter("Invalid document id, please try again later", error)
+            errorFormatter(
+              "ID de document non valide, veuillez réessayer plus tard",
+              error
+            )
           );
 
       let NewDocument = {
@@ -233,13 +256,11 @@ router.put(
       if (updateDocument.rowCount <= 0)
         return res
           .status(400)
-          .json(errorFormatter("Failed to update document", error));
+          .json(errorFormatter("Échec de la mise à jour du document", error));
 
       return res.status(200).json({
-        msg: "nouveau rôle créé avec succès",
+        msg: "Informations sur le document mises à jour avec succès",
         document: NewDocument,
-        // document_code: document_code,
-        // document_id: document_id,
       });
     } catch (error) {
       console.log({ error });
@@ -248,10 +269,119 @@ router.put(
   }
 );
 
-router.get("/", async (req, res) => {
+router.get("/details/:document_id", async (req, res) => {
   try {
-    let user = await Roles.getRoles();
-    return res.status(200).json(user.rows);
+    if (req.params.document_id === "")
+      return res
+        .status(400)
+        .json(errorFormatter("Demande de document invalide", null));
+    let documents = await Document.getDocumentDetailsById(
+      req.params.document_id
+    );
+
+    if (documents.rowCount <= 0)
+      return res
+        .status(400)
+        .json(
+          errorFormatter(
+            "Le document est introuvable dans le système, veuillez réessayer",
+            null
+          )
+        );
+
+    let documentDB = documents.rows[0];
+    let users = {
+      minister: null,
+      cecat: null,
+      director: null,
+      govenor: null,
+      expert: null,
+      expeditor: null,
+      registered_by: null,
+    };
+
+    let relatedDocument = { rows: [] };
+    if (documentDB.reference_code !== null)
+      relatedDocument = await Document.getDocumentFewInfoByReferenceCode(
+        documentDB.document_reference_code
+      );
+
+    // minister_id
+    if (documentDB.minister_id !== null) {
+      let minister_id_db = await Users.getUserById(documentDB.minister_id);
+      if (minister_id_db.rowCount >= 1) users.minister = minister_id_db.rows[0];
+    }
+
+    // cecat_id
+    if (documentDB.cecat_id !== null) {
+      let cecat_id_db = await Users.getUserById(documentDB.cecat_id);
+      if (cecat_id_db.rowCount >= 1) users.cecat = cecat_id_db.rows[0];
+    }
+
+    // director_id
+    if (documentDB.director_id !== null) {
+      let director_id_db = await Users.getUserById(documentDB.director_id);
+      if (director_id_db.rowCount >= 1) users.director = director_id_db.rows[0];
+    }
+
+    // governor_id
+    if (documentDB.governor_id !== null) {
+      let governor_id_db = await Users.getUserById(documentDB.governor_id);
+      if (governor_id_db.rowCount >= 1) users.govenor = governor_id_db.rows[0];
+    }
+
+    // expert_id
+    if (documentDB.expert_id !== null) {
+      let expert_id_db = await Users.getUserById(documentDB.expert_id);
+      if (expert_id_db.rowCount >= 1) users.expert = expert_id_db.rows[0];
+    }
+
+    // expeditor_id
+    if (documentDB.expeditor_id !== null) {
+      let expeditor_id_db = await Users.getUserById(documentDB.expeditor_id);
+      if (expeditor_id_db.rowCount >= 1)
+        users.expeditor = expeditor_id_db.rows[0];
+    }
+
+    // registered_by_id
+    if (documentDB.registered_by_id !== null) {
+      let registered_by_id_db = await Users.getUserById(
+        documentDB.registered_by_id
+      );
+      if (registered_by_id_db.rowCount >= 1)
+        users.registered_by = registered_by_id_db.rows[0];
+    }
+
+    return res.status(200).json({
+      document: documentDB,
+      users,
+      reference_document:
+        relatedDocument.rows.length <= 0 ? null : relatedDocument.rows[0],
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(errorFormatter(null, error));
+  }
+});
+
+router.get("/:access_enum/:role_id", async (req, res) => {
+  try {
+    let access_enum = req.params.access_enum;
+    let access_id = req.params.role_id;
+    if (access_enum === "" || access_id === "")
+      return res.status(400).json(errorFormatter(null, error));
+    let documents = await Document.getDocumentsList(access_enum, access_id);
+    return res.status(200).json(documents.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(errorFormatter(null, error));
+  }
+});
+
+router.get("/document-few-info", async (req, res) => {
+  try {
+    let documents = await Document.getAllDocumentFewInfo();
+    return res.status(200).json(documents.rows);
   } catch (error) {
     console.log(error);
     return res.status(500).json(errorFormatter(null, error));
