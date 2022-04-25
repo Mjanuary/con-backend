@@ -1,5 +1,5 @@
 {
-  "status": "development",
+  "status": "production",
   "jwtSecret": "o/o033Ubli/DeD/lOI2KTE89EdQ1uLVxsb/r9VXqraaEih31ou6hlMxRBibCc5U28tClLhLD6T5h3d06JnCJTEtn1A/ojMDHBpjf8Kfsjb9wjtKbO/rbs0wz1pvYQmniUSwUFz8gnOwsAIo/cw6DVxjkAMy9yNT4EqDp9YcQ+kSdYKiRVUqKVd+Adx5bH0wjS/RzeGM/Xv6/0tZX6W0h00LDV0JuqQoM0t6sPoDjJuPQaZmqkl9mRFgL7SpoiHqAmY+wEYhY/Ma25mi9UuAgkUQKtvt36j58q2XOQDg+jCX+yEJA/u39NRh/xP0wx9JUEefxhuil4zcA8foO/BsZRQ==",
   "port": 5432,
   "email": "proffesion90@gmail.com",
@@ -18,7 +18,7 @@
   "testing": {
     "user": "postgres",
     "host": "localhost",
-    "url": "http://localhost:5000",
+    "url": "http://localhost:4040",
     "database": "congo-management-db",
     "password": "cre@tiveDB",
     "port": 5432

@@ -8,6 +8,14 @@ const pool = new Pool({
   port: config.get(`${config.get("status")}.port`),
 });
 
+console.log({
+  user: config.get(`${config.get("status")}.user`),
+  host: config.get(`${config.get("status")}.host`),
+  database: config.get(`${config.get("status")}.database`),
+  password: config.get(`${config.get("status")}.password`),
+  port: config.get(`${config.get("status")}.port`),
+});
+
 pool.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
