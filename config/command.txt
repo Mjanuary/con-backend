@@ -2,4 +2,8 @@ WINDOWS:
 C:\Program Files\PostgreSQL\12\bin> .\pg_dump.exe -U postgres -p 5432 -d imihigo_db -W -f imihigo_irenze_2_db.sql
 
 MAC: 
-sudo pg_dump -U postgres -p 5432 -d imihigo_db > imihigo_db.sql
+sudo pg_dump -U postgres -p 5432 -d "congo-management-db" > "congo-management-db.sql";
+
+
+BACKUP MYSQL db:
+ psql -h localhost -U postgres -d "congo-management-db" -f db.sql

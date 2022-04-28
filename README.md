@@ -34,4 +34,7 @@ path: `config/default.json`
 registered
 
 ⭐ in user router line 111 you have to change to your email ohterwise you don't get an email of registered user or get an error "email not send"
+
 # cong-backend
+
+npm install -g db-migrate

@@ -263,22 +263,22 @@ const getDocumentsList = async (access_enum, domain_id) => {
     let data = [];
     if (UserRoles_ENUM.CECAT === access_enum) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0'`;
+      FROM documents WHERE status='1' AND closed = '0' ORDER BY registered_date DESC`;
       data = [];
     }
     if (UserRoles_ENUM.CABINET_OFFICE === access_enum) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0'`;
+      FROM documents WHERE status='1' AND closed = '0' ORDER BY registered_date DESC`;
       data = [];
     }
     if (UserRoles_ENUM.EXPEDITION === access_enum) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0' AND to_print = '1'`;
+      FROM documents WHERE status='1' AND closed = '0' AND expeditor_view = '1' ORDER BY registered_date DESC`;
       data = [];
     }
     if (UserRoles_ENUM.EXPERT === access_enum) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0' AND expert_access = '1' AND domain_id = $1`;
+      FROM documents WHERE status='1' AND closed = '0' AND expert_access = '1' AND domain_id = $1 ORDER BY registered_date DESC`;
       data = [domain_id];
     }
     if (
@@ -286,27 +286,27 @@ const getDocumentsList = async (access_enum, domain_id) => {
       UserRoles_ENUM.SOUS_GOVENER === access_enum
     ) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0' AND governor_access='1' `;
+      FROM documents WHERE status='1' AND closed = '0' AND governor_access='1'  ORDER BY registered_date DESC`;
       data = [];
     }
     if (UserRoles_ENUM.MINISTOR === access_enum) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0' AND ministor_access='1' AND domain_id=$1 `;
+      FROM documents WHERE status='1' AND closed = '0' AND ministor_access='1' AND domain_id=$1  ORDER BY registered_date DESC`;
       data = [domain_id];
     }
     if (UserRoles_ENUM.SECRETARY === access_enum) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0'`;
+      FROM documents WHERE status='1' AND closed = '0' ORDER BY registered_date DESC`;
       data = [];
     }
     // if (UserRoles_ENUM.SOUS_GOVENER === access_enum) {
     //   query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-    //   FROM documents WHERE status='1' AND closed = '0' AND governor_access='1' `;
+    //   FROM documents WHERE status='1' AND closed = '0' AND governor_access='1'  ORDER BY registered_date DESC`;
     //   data = [];
     // }
     if (UserRoles_ENUM.DIRECTOR === access_enum) {
       query = `SELECT closed,status,document_id, document_code, document_url, domain_id, priority_id, document_reference_code, registered_by_id, registered_date, owner_name, owner_institute, owner_phone, owner_email
-      FROM documents WHERE status='1' AND closed = '0' AND director_access='1' `;
+      FROM documents WHERE status='1' AND closed = '0' AND director_access='1'  ORDER BY registered_date DESC`;
       data = [];
     }
     if (query === "") throw ERROR_TEXT;
