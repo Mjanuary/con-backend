@@ -319,6 +319,46 @@ const getDocumentsList = async (access_enum, domain_id) => {
   }
 };
 
+// Get the number of all documents
+const deleteAllDocuments = async () => {
+  try {
+    let data = await pool.query(
+      "DELETE FROM documents WHERE document_id != '12'"
+    );
+    return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
+
+// Get the number of all documents
+const deleteDocumentByCode = async (code_id) => {
+  try {
+    let data = await pool.query(
+      "DELETE FROM documents WHERE document_code = $1",
+      [code_id]
+    );
+    return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
+
+const deleteDocumentById = async (document_id) => {
+  try {
+    let data = await pool.query(
+      "DELETE FROM documents WHERE document_id = $1",
+      [document_id]
+    );
+    return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
+
 module.exports = {
   updateDocument,
   getTotalDocuments,
@@ -327,4 +367,7 @@ module.exports = {
   getDocumentsList,
   getDocumentFewInfoByReferenceCode,
   getAllDocumentFewInfo,
+  deleteAllDocuments,
+  deleteDocumentByCode,
+  deleteDocumentById,
 };

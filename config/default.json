@@ -5,12 +5,12 @@
   "email": "proffesion90@gmail.com",
   "email_passowrd": "",
   "system": "Congo management",
-  "url": "http://159.203.117.40",
+  "url": "http://159.203.117.40:4040",
   "auditor_id": "52fe8871-5778-45fc-91da-b489eefe07ae",
   "production": {
     "user": "postgres",
     "host": "localhost",
-    "url": "http://159.203.117.40",
+    "url": "http://159.203.117.40:4040",
     "database": "congo-management-db",
     "password": "cre@tiveDBRwanda",
     "port": 5432

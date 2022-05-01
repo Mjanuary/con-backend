@@ -14,6 +14,21 @@ const getDomains = async () => {
   }
 };
 
+// Get the active year
+const updateDomains = async ({ domain_name, domain_id }) => {
+  try {
+    let data = await pool.query(
+      "UPDATE domains SET domain_name=$1 WHERE  domain_id=$2",
+      [domain_name, domain_id]
+    );
+    return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
+
 module.exports = {
   getDomains,
+  updateDomains,
 };

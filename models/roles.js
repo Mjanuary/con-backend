@@ -25,6 +25,19 @@ const CreateRole = async ({ role_name, access }) => {
   }
 };
 
+const UpdateRole = async ({ role_name, role_id }) => {
+  try {
+    let data = await pool.query(
+      `UPDATE roles SET  role_name=$1 WHERE role_id=$2`,
+      [role_name, role_id]
+    );
+    return data;
+  } catch (error) {
+    errorDisplay(error);
+    throw ERROR_TEXT;
+  }
+};
+
 const CreateAccess = async ({ user_id, role_id, domain_id }) => {
   try {
     let data = await pool.query(
@@ -57,4 +70,5 @@ module.exports = {
   getRoles,
   CreateRole,
   UserRoles_ENUM,
+  UpdateRole,
 };

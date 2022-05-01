@@ -52,4 +52,38 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.put(
+  "/",
+  [
+    check("role_name", "Le nom du rôle est requis").not().isEmpty(),
+    check("role_id", "Role_id est requis").not().isEmpty(),
+  ],
+  async (req, res) => {
+    //checking errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+      });
+    }
+
+    const { role_name, role_id } = req.body;
+
+    try {
+      let CreateRole = await Roles.UpdateRole({
+        role_id: role_id,
+        role_name: role_name,
+      });
+      // console.log({ CreateRole });
+      return res.status(200).json({
+        msg: "Role updated successfully",
+        status: CreateRole.rowCount,
+      });
+    } catch (error) {
+      console.log({ ...error });
+      return res.status(500).json(errorFormatter(null, error));
+    }
+  }
+);
+
 module.exports = router;

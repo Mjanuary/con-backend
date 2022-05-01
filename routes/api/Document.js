@@ -388,4 +388,15 @@ router.get("/document-few-info", async (req, res) => {
   }
 });
 
+router.delete("/:document_code", async (req, res) => {
+  let document_code = req.params.document_code;
+  try {
+    let documents = await Document.deleteDocumentById(document_code);
+    return res.status(200).json(documents.rowCount);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(errorFormatter(null, error));
+  }
+});
+
 module.exports = router;

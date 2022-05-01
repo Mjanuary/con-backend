@@ -124,6 +124,25 @@ const updateUserPassword = async (id, password) => {
   }
 };
 
+// FIND USER BY ID OR EMAIL
+const updateUserNames = async ({
+  first_name,
+  last_name,
+  middle_name,
+  user_id,
+}) => {
+  try {
+    let user = await pool.query(
+      "UPDATE users SET first_name=$1, last_name=$2, middle_name=$3 WHERE user_id=$4",
+      [first_name, last_name, middle_name, user_id]
+    );
+    return user;
+  } catch (error) {
+    errorDisplay(error);
+    return ERROR_TEXT;
+  }
+};
+
 module.exports = {
   getUserById,
   getAllUsers,
@@ -133,4 +152,5 @@ module.exports = {
   validateUser,
   updateUserPassword,
   getUserByEmail,
+  updateUserNames,
 };
